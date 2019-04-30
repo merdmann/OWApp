@@ -8,12 +8,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* search by name and return the id */
     function Search( name) {
-    	let result;
+    	let result = null;
 
-        console.log("Search" +  name)
+        console.log("Search " +  name)
 
 		Cities.forEach( function(city) {  
-            if( city.name.includes(name)) 
+            if( city.name.toLowerCase().includes(name.toLowerCase()))
  			    result = city.id;
 		});
 
@@ -25,9 +25,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function main(data) {
         const pageTitle = document.title;
         console.log("main :" + pageTitle);
-
-        // install the search-text handler
         const _search_text_ = document.getElementById("search-text");
+
+        fetchData("http://api.openweathermap.org/data/2.5/weather?q="+_search_text_.value);
+        // install the search-text handler
         _search_text_.addEventListener("change", function () {
             id = Search( _search_text_.value);
             fetchData("http://api.openweathermap.org/data/2.5/weather?id=" + Search(_search_text_.value));
@@ -52,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         _span_info_.innerHTML = info;
         const _sky_ = document.getElementById("sky");
+        sky.classList.toggle(data.weather[0].main)  /* the cleeses from prev. site need to be cleared */
+
         sky.classList.add(data.weather[0].main)  
 
     } /* ProcessAndRender */
