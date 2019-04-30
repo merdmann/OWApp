@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			result = city.name==name ? city.id : null;
 		});
 
+        console.log( result );
 		return result;
 	}
 
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const pageTitle = document.title;
         console.log("main :" + pageTitle);
 
-        fetchData("http://api.openweathermap.org/data/2.5/weather?q=Berlin");
+        fetchData("http://api.openweathermap.org/data/2.5/weather?q=" + Search("Berlin"));
 
         // install the search-text handler
         const _search_text_ = document.getElementById("search-text");
