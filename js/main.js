@@ -10,24 +10,27 @@ document.addEventListener('DOMContentLoaded', function () {
     function Search( name) {
     	let result;
 
-		Cities.forEach( function(city) {
-			result = city.name==name ? city.id : null;
+        console.log("Search" +  name)
+
+		Cities.forEach( function(city) {  
+            if( city.name.includes(name)) 
+ 			    result = city.id;
 		});
 
         console.log( result );
 		return result;
 	}
 
+    /* start and pick wht is requested on the screen */
     function main(data) {
         const pageTitle = document.title;
         console.log("main :" + pageTitle);
-
-        fetchData("http://api.openweathermap.org/data/2.5/weather?q=" + Search("Berlin"));
 
         // install the search-text handler
         const _search_text_ = document.getElementById("search-text");
         _search_text_.addEventListener("change", function () {
             id = Search( _search_text_.value);
+            fetchData("http://api.openweathermap.org/data/2.5/weather?id=" + Search(_search_text_.value));
         })
     }
         /* UPDATE every 10 mins.
@@ -74,7 +77,3 @@ document.addEventListener('DOMContentLoaded', function () {
 
     main();
 }) // DOMContentLoaded handler
-
-/*
- * remove a card from the local storage (ListOfInt) and the screen
- */
