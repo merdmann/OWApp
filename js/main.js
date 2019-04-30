@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const MS = 1000
     const MIN = 60;
     let  id;
+    const K = 273.15;
 
     /* search by name and return the id */
     function Search( name) {
@@ -25,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // install the search-text handler
         const _search_text_ = document.getElementById("search-text");
         _search_text_.addEventListener("change", function () {
-            id = Search( _earch_text_.value);
+            id = Search( _search_text_.value);
         })
     }
         /* UPDATE every 10 mins.
@@ -40,6 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
     function ProcessAndRender(data) {
         console.log("ProcessAndRender");
         console.log(data);
+
+        const _span_info_ = document.getElementById("span-info");
+        let info = ` <strong>${data.name} ${data.weather[0].main}</strong><br> 
+                     <strong>${(data.main.temp-K).toFixed(2)} C</strong>`
+
+        _span_info_.innerHTML = info;
+        const _sky_ = document.getElementById("sky");
+        sky.classList.add(data.weather[0].main)  
 
     } /* ProcessAndRender */
 
