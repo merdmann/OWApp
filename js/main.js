@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const K = 273.15;
 
     /* search by name and return the id */
-    function Search( name) {
+    function Search(name) {
     	let result = null;
 
         console.log("Search " +  name)
 
-		Cities.forEach( function(city) {  
+		Cities.forEach( function(city) {
             if( city.name.toLowerCase().includes(name.toLowerCase()))
  			    result = city.id;
 		});
@@ -21,24 +21,27 @@ document.addEventListener('DOMContentLoaded', function () {
 		return result;
 	}
 
+    /* remove all sky styles */
+    function clear(classList) {
+   
+
+    } /* clear */
+
+
     /* start and pick wht is requested on the screen */
     function main(data) {
         const pageTitle = document.title;
         console.log("main :" + pageTitle);
         const _search_text_ = document.getElementById("search-text");
+        const _sky_ = document.getElementById("sky");
+
 
         fetchData("http://api.openweathermap.org/data/2.5/weather?q="+_search_text_.value);
         // install the search-text handler
         _search_text_.addEventListener("change", function () {
             id = Search( _search_text_.value);
             fetchData("http://api.openweathermap.org/data/2.5/weather?id=" + Search(_search_text_.value));
-        })
-    }
-        /* UPDATE every 10 mins.
-        window.setTimeout(function () {
-        	fetchData(fetchData("http://api.openweathermap.org/data/2.5/weather?q=Berlin");)
-        }, MS * NIN * 10 );
-
+        });
     } /* main */
 
 
@@ -47,15 +50,16 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("ProcessAndRender");
         console.log(data);
 
-        const _span_info_ = document.getElementById("span-info");
-        let info = ` <strong>${data.name} ${data.weather[0].main}</strong><br> 
-                     <strong>${(data.main.temp-K).toFixed(2)} C</strong>`
-
-        _span_info_.innerHTML = info;
         const _sky_ = document.getElementById("sky");
-        sky.classList.toggle(data.weather[0].main)  /* the cleeses from prev. site need to be cleared */
+        let info = ` <div class="card" style="width: 18rem">
+                     <img class="card-img-top" src="./icons/${data.weather[0].main.toLowerCase()}.jpg">
+                       <div class="card-body">
+                       <p class="card-text">${data.name}  ${(data.main.temp-K).toFixed(2)} C</p>
+                     </div>
+                     </div>
+                     </p>`
 
-        sky.classList.add(data.weather[0].main)  
+        _sky_.innerHTML = info;
 
     } /* ProcessAndRender */
 
