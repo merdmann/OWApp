@@ -21,20 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
 		return result;
 	}
 
-    /* remove all sky styles */
-    function clear(classList) {
-   
-
-    } /* clear */
-
-
     /* start and pick wht is requested on the screen */
     function main(data) {
         const pageTitle = document.title;
         console.log("main :" + pageTitle);
         const _search_text_ = document.getElementById("search-text");
         const _sky_ = document.getElementById("sky");
-
+        const _btn_find_ = document.getElementById("btn-find");
 
         fetchData("http://api.openweathermap.org/data/2.5/weather?q="+_search_text_.value);
         // install the search-text handler
@@ -42,6 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
             id = Search( _search_text_.value);
             fetchData("http://api.openweathermap.org/data/2.5/weather?id=" + Search(_search_text_.value));
         });
+        // the Find ! hndler
+        _btn_find_.addEventListener("click", function() {
+            console.log("clicky");
+            let id = Search( _search_text_.value);
+            fetchData("api.openweathermap.org/data/2.5/forecast?id=") + Search(_search_text_.value));
+        }); 
     } /* main */
 
 
