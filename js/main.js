@@ -29,31 +29,55 @@ document.addEventListener('DOMContentLoaded', function () {
         const _sky_ = document.getElementById("sky");
         const _btn_find_ = document.getElementById("btn-find");
 
-        fetchData("http://api.openweathermap.org/data/2.5/weather?q="+_search_text_.value);
+        fetchData("http://api.openweathermap.org/data/2.5/forecast?id="+_search_text_.value);
         // install the search-text handler
         _search_text_.addEventListener("change", function () {
             id = Search( _search_text_.value);
-            fetchData("http://api.openweathermap.org/data/2.5/weather?id=" + Search(_search_text_.value));
+            fetchData("http://api.openweathermap.org/data/2.5/forecast?id=" + Search(_search_text_.value));
         });
         // the Find ! hndler
         _btn_find_.addEventListener("click", function() {
-            console.log("clicky");
             let id = Search( _search_text_.value);
-            fetchData("api.openweathermap.org/data/2.5/forecast?id=") + Search(_search_text_.value));
+            fetchData("http://api.openweathermap.org/data/2.5/forecast?id=" + Search(_search_text_.value) );
         }); 
     } /* main */
+
+    function ToC(x) {
+    	return (x-K).toFixed(2);
+    }
+
+    function summary(item) {
+    	let result = "png/010-celsius.png";
+ 
+    	result = item.weather[0].main=="Rain" ? "png/001-rain.png" : result;
+
+    	return result;
+    }
 
 
     // do the per page rendering of the received data
     function ProcessAndRender(data) {
         console.log("ProcessAndRender");
         console.log(data);
+        let prediction = data.list;
+
+        let table = `   `;
+
+        if( prediction != null ) 
+            prediction.forEach( function(item){
+        	    table += `<tr><td>${item.dt_txt.split(" ")[0]}</td><td>${" " + ToC(item.main.temp)}<td><img class="myIcons" src=${ "./img/icons/" + summary(item)}></td>
+      		       `
+       		}) 
 
         const _sky_ = document.getElementById("sky");
-        let info = ` <div class="card" style="width: 18rem">
-                     <img class="card-img-top" src="./icons/${data.weather[0].main.toLowerCase()}.jpg">
+        let info = `<div class="card" style="width: 18rem">
+                     <img class="card-img-top" src=${ "./img/icons/" + summary(prediction[0])}>
                        <div class="card-body">
-                       <p class="card-text">${data.name}  ${(data.main.temp-K).toFixed(2)} C</p>
+                       <p class="card-text">${data.city.name}</p>
+                       ${ ToC(data.list[0].main.temp_min)}
+                       <table>
+                       ${table}
+                       </table>
                      </div>
                      </div>
                      </p>`
@@ -70,12 +94,9 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("fetching" + myurl);
         fetch(url + "&appid=" + key)
             .then(function (response) {
-                document.body.style.cursor = 'wait'
-                console.log(response)
                 return response.json()
             })
             .then(function (myJson) {
-                document.body.style.cursor = 'auto'
                 ProcessAndRender(myJson);
             })
             .catch(err => console.log(err))

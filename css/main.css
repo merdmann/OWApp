@@ -1,66 +1,7 @@
-.Clear {
-##    background: #0088ff;
-/*     color: white ; */
 
-} 
 
-.Mist {
-   background: gray;
-   color: white;   
-   background-image: url("../icons/Rain.jpg"); 
-   min-height: 100%;
-   min-width: 1024px;
-   
-   width: 100%;
-   height: auto;
-	
-   position: fixed;
-   top: 0;
-   left: 0;
-
-   background-repeat: no-repeat;
-   background-size: auto auto;
-}
-
-.Clouds {
-   background: gray;
-   color: white;   
-   /* background-image: url("../icons/cloud.jpg"); */
-   min-height: 100%;
-   min-width: 1024px;
-   
-   width: 100%;
-   height: auto;
-	
-   position: fixed;
-   top: 0;
-   left: 0;
-
-   background-repeat: no-repeat;
-   background-size: auto auto;
-}
-
-.Background {
-   width: 200px;
-   height: 200px;
-   background-color:  #000000;
-}
-
-.Rain {
-   background: gray;
-   color: white;   
-   background-image: url("../icons/rain.jpg"); 
-   min-height: 100%;
-   min-width: 1024px;
-   
-   width: 100%;
-   height: auto;
-	
-   position: fixed;
-   top: 0;
-   left: 0;
-
-   background-repeat: no-repeat;
-   background-size: auto auto;
+.myIcons {
+	width:  32px;
+	height: 32px;
 }
 
