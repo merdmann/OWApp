@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const _sky_ = document.getElementById("sky");
         const _btn_find_ = document.getElementById("btn-find");
 
-        fetchData("http://api.openweathermap.org/data/2.5/forecast?id="+_search_text_.value);
+        fetchData("http://api.openweathermap.org/data/2.5/forecast?id="+ Search(_search_text_.value));
         // install the search-text handler
         _search_text_.addEventListener("change", function () {
             id = Search( _search_text_.value);
@@ -46,10 +46,13 @@ document.addEventListener('DOMContentLoaded', function () {
     	return (x-K).toFixed(2);
     }
 
+    /*
+     * This derives the icon to be shown for the specific waether
+     */
     function summary(item) {
     	let result = "png/010-celsius.png";
  
-    	result = item.weather[0].main=="Rain" ? "png/001-rain.png" : result;
+    	result = item.weather[0].main=="Rain" ? "png/002-rain.png" : result;
 
     	return result;
     }
@@ -59,22 +62,25 @@ document.addEventListener('DOMContentLoaded', function () {
     function ProcessAndRender(data) {
         console.log("ProcessAndRender");
         console.log(data);
-        let prediction = data.list;
 
+        if( data.cod != 200) {
+        	alert(data.message );
+        }
+        
+        // crete forcast overview
         let table = `   `;
 
-        if( prediction != null ) 
-            prediction.forEach( function(item){
-        	    table += `<tr><td>${item.dt_txt.split(" ")[0]}</td><td>${" " + ToC(item.main.temp)}<td><img class="myIcons" src=${ "./img/icons/" + summary(item)}></td>
-      		       `
-       		}) 
+        data.list.forEach( function(item){
+        	table += `<tr><td>${item.dt_txt.split(" ")[0]}</td><td><img class="myIcons" src=${"./img/icons/" + summary(item)}></td><td>${ToC(item.main.temp)}</td>`
+       	}) 
+    	console.log( data.list )
 
         const _sky_ = document.getElementById("sky");
         let info = `<div class="card" style="width: 18rem">
-                     <img class="card-img-top" src=${ "./img/icons/" + summary(prediction[0])}>
+                     <img class="card-img-top" class=biggerIcon src=${ "./img/icons/" + summary(data.list[0])}>
                        <div class="card-body">
-                       <p class="card-text">${data.city.name}</p>
-                       ${ ToC(data.list[0].main.temp_min)}
+                       <strong><p class="card-text">${data.city.name} ${data.list[0].weather[0].description}</p>
+                       ${ToC(data.list[0].main.temp_min)}</strong>
                        <table>
                        ${table}
                        </table>
