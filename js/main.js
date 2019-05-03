@@ -50,9 +50,16 @@ document.addEventListener('DOMContentLoaded', function () {
      * This derives the icon to be shown for the specific waether
      */
     function summary(item) {
-    	let result = "png/010-celsius.png";
- 
+    	let result = "png/008-weather.png";
+    	console.log("summary");
+ 		console.log( item);
+
     	result = item.weather[0].main=="Rain" ? "png/002-rain.png" : result;
+        result = item.weather[0].description=="broken clouds" ? "png/020-clouds.png" : result;
+        result = item.weather[0].description=="few clouds" ? "png/015-cloud.png" : result;
+        result = item.weather[0].description=="overcast clouds" ? "png/013-cloudy.png" : result;
+        result = item.weather[0].description=="clear sky" ? "png/013-cloudy.png" : result;
+
 
     	return result;
     }
@@ -77,10 +84,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const _sky_ = document.getElementById("sky");
         let info = `<div class="card" style="width: 18rem">
-                     <img class="card-img-top" class=biggerIcon src=${ "./img/icons/" + summary(data.list[0])}>
+                        <div class="card-header">Current Weather</div>
+                        <img class="card-img-top img-fluid rounded" src=${"./img/icons/" + summary(data.list[0])}>
                        <div class="card-body">
-                       <strong><p class="card-text">${data.city.name} ${data.list[0].weather[0].description}</p>
-                       ${ToC(data.list[0].main.temp_min)}</strong>
+                       <ul class="list-group list-group-flush">
+                       <li class="list-group-item"><p class="font-weight-bold">${data.city.name} ${data.list[0].weather[0].description}</p></li>
+                       ${ToC(data.list[0].main.temp_min)}C
                        <table>
                        ${table}
                        </table>
