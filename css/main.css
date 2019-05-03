@@ -1,7 +1,28 @@
 
 
-.myIcons {
-	width:  32px;
+.dailySummary {
+	width:  40%;
+	height: 40%;
+}
+
+
+.summaryIcons {
+	width: 32px;
 	height: 32px;
 }
 
+
+.DateLayout {
+	width: 20%;
+	text-align: center;
+}
+
+.timeLayout {
+	width: 20%;
+	text-align:  center;
+}
+
+.summaryLayout {
+	margin-left: auto;
+	margin-right:  auto;
+}

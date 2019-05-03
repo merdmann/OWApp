@@ -54,13 +54,16 @@ document.addEventListener('DOMContentLoaded', function () {
     	console.log("summary");
  		console.log( item);
 
+         if( item.main.temp_min < 273) {
+            result = "png/046-cold.png"
+         }
+        else { 
     	result = item.weather[0].main=="Rain" ? "png/002-rain.png" : result;
         result = item.weather[0].description=="broken clouds" ? "png/020-clouds.png" : result;
         result = item.weather[0].description=="few clouds" ? "png/015-cloud.png" : result;
         result = item.weather[0].description=="overcast clouds" ? "png/013-cloudy.png" : result;
         result = item.weather[0].description=="clear sky" ? "png/013-cloudy.png" : result;
-
-
+        }
     	return result;
     }
 
@@ -73,23 +76,32 @@ document.addEventListener('DOMContentLoaded', function () {
         if( data.cod != 200) {
         	alert(data.message );
         }
-        
+
         // crete forcast overview
-        let table = `   `;
+        let table = ` <th>Date</th>
+                      <th>Time</th>
+                      <th>Summary</th>
+                      <th>Temperature</th>
+                     `
 
         data.list.forEach( function(item){
-        	table += `<tr><td>${item.dt_txt.split(" ")[0]}</td><td><img class="myIcons" src=${"./img/icons/" + summary(item)}></td><td>${ToC(item.main.temp)}</td>`
+            table += `<tr><td class=DateLayout>${item.dt_txt.split(" ")[0]}</td><td class="timeLayout">${item.dt_txt.split(" ")[1]}</td>
+            <td class="dailySummary"><img class="summaryIcons" src=${"./img/icons/" + summary(item)}></img></td>
+            <td>${ToC(item.main.temp)}</td>`
        	}) 
     	console.log( data.list )
 
         const _sky_ = document.getElementById("sky");
-        let info = `<div class="card" style="width: 18rem">
-                        <div class="card-header">Current Weather</div>
-                        <img class="card-img-top img-fluid rounded" src=${"./img/icons/" + summary(data.list[0])}>
-                       <div class="card-body">
+        let info = `<div class="card">
+                    <div class="card-header lead"><h1>${data.city.name} / ${data.city.country}</h1></div>
+                      <img class=" rounded float-right dialySummary" src=${ "./img/icons/" + summary(data.list[0]) }>
+                    <div class="card-body">
                        <ul class="list-group list-group-flush">
-                       <li class="list-group-item"><p class="font-weight-bold">${data.city.name} ${data.list[0].weather[0].description}</p></li>
-                       ${ToC(data.list[0].main.temp_min)}C
+                       <li class="list-group-item">
+                         <h2>${data.city.name} ${data.list[0].weather[0].description}</p>
+                       ${ToC(
+                           data.list[0].main.temp_min)} C</h2>
+                        </li>
                        <table>
                        ${table}
                        </table>
