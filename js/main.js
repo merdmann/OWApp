@@ -3,21 +3,26 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log("DOMContentLoaded")
     const MS = 1000
     const MIN = 60;
-    let  id;
+    let  id = 0;     
     const K = 273.15;
 
-    /* search by name and return the id */
+
+    /* search by name returns a result set */
     function Search(name) {
-    	let result = null;
+        let result = new Map();
+        let countries = [];
 
-        console.log("Search " +  name)
-
+        console.log("Search (" +  name + ")");
+        
 		Cities.forEach( function(city) {
-            if( city.name.toLowerCase().includes(name.toLowerCase()))
- 			    result = city.id;
+            if( city.name.toLowerCase().includes(name.toLowerCase())) {
+                if(!countries.includes(city.country)) {
+                    countries.push(city.country);
+                	result.set(city.country, city.id);
+                }
+            } 
 		});
 
-        console.log( result );
 		return result;
 	}
 
@@ -28,22 +33,35 @@ document.addEventListener('DOMContentLoaded', function () {
         const _search_text_ = document.getElementById("search-text");
         const _sky_ = document.getElementById("sky");
         const _btn_find_ = document.getElementById("btn-find");
+        const _bdg_search_size_= document.getElementById("bdg-search-size");
+        const _select_ = document.getElementById("select-country");
+        let   id = 0;
 
-        fetchData("http://api.openweathermap.org/data/2.5/forecast?id="+ Search(_search_text_.value));
-        // install the search-text handler
-        _search_text_.addEventListener("change", function () {
-            id = Search( _search_text_.value);
-            fetchData("http://api.openweathermap.org/data/2.5/forecast?id=" + Search(_search_text_.value));
-        });
-        // the Find ! hndler
+        
         _btn_find_.addEventListener("click", function() {
-            let id = Search( _search_text_.value);
-            fetchData("http://api.openweathermap.org/data/2.5/forecast?id=" + Search(_search_text_.value) );
+            let resultSet = Search( _search_text_.value);
+            _bdg_search_size_.innerHTML=resultSet.size;
+            let tmp = `<select id="select-country">`;
+            resultSet.forEach( function( item, key, map ) {
+                    tmp +=`<option value="${item}">${key}</option>` ; 
+            })
+            tmp += "</select>"
+            document.getElementById("country-selector").innerHTML = tmp;
+
+            const _select_ = document.getElementById("select-country");
+            _select_.addEventListener( 'click', function() {
+               id = _select_.options[_select_.selectedIndex].value;
+               console.log(id.value);
+               fetchData("http://api.openweathermap.org/data/2.5/forecast?id=" + id);
+            });
         }); 
     } /* main */
 
+    /*
+     * Covert kelvin into Celsius 
+     */
     function ToC(x) {
-    	return (x-K).toFixed(2);
+    	return (x-K).toFixed(0);
     }
 
     /*
@@ -58,11 +76,11 @@ document.addEventListener('DOMContentLoaded', function () {
             result = "png/046-cold.png"
          }
         else { 
-    	result = item.weather[0].main=="Rain" ? "png/002-rain.png" : result;
-        result = item.weather[0].description=="broken clouds" ? "png/020-clouds.png" : result;
-        result = item.weather[0].description=="few clouds" ? "png/015-cloud.png" : result;
-        result = item.weather[0].description=="overcast clouds" ? "png/013-cloudy.png" : result;
-        result = item.weather[0].description=="clear sky" ? "png/013-cloudy.png" : result;
+    	    result = item.weather[0].main=="Rain" ? "png/002-rain.png" : result;
+            result = item.weather[0].description=="broken clouds" ? "png/020-clouds.png" : result;
+            result = item.weather[0].description=="few clouds" ? "png/015-cloud.png" : result;
+            result = item.weather[0].description=="overcast clouds" ? "png/013-cloudy.png" : result;
+            result = item.weather[0].description=="clear sky" ? "png/013-cloudy.png" : result;
         }
     	return result;
     }
@@ -73,11 +91,11 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("ProcessAndRender");
         console.log(data);
 
-        if( data.cod != 200) {
-        	alert(data.message );
-        }
+//        if( data.cod != 200) {
+//        	alert(data.message );
+//        }
 
-        // crete forcast overview
+        // create forecast overview
         let table = ` <th>Date</th>
                       <th>Time</th>
                       <th>Summary</th>
@@ -94,20 +112,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const _sky_ = document.getElementById("sky");
         let info = `<div class="card">
                     <div class="card-header lead"><h1>${data.city.name} / ${data.city.country}</h1></div>
-                      <img class=" rounded float-right dialySummary" src=${ "./img/icons/" + summary(data.list[0]) }>
-                    <div class="card-body">
-                       <ul class="list-group list-group-flush">
-                       <li class="list-group-item">
-                         <h2>${data.city.name} ${data.list[0].weather[0].description}</p>
-                       ${ToC(
-                           data.list[0].main.temp_min)} C</h2>
-                        </li>
+                      <img class="float-right dialySummary" src=${ "./img/icons/" + summary(data.list[0]) }>
+                        <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item lead">${data.city.name} ${data.list[0].weather[0].description}</li>
+                            <li class="list-group-item lead">Temperature ${ToC( data.list[0].main.temp_min)} C</li>
+                        </ul>
                        <table>
                        ${table}
                        </table>
                      </div>
-                     </div>
-                     </p>`
+                     </div>`
 
         _sky_.innerHTML = info;
 
