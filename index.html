@@ -16,12 +16,18 @@
 
 <body>
     <div class="container">
-        <input width="60%" id="search-text" value="Berlin" type="text" size="100"> 
-        <button id="btn-find" type="button" class="btn btn-primary">Find!</button>
-        <span id="bdg-search-size" class = "badge"></span> 
-        <div id="country-selector" class="sticky-top">yxxxx</div>
+        <div class="input-group input-group-lg">
+            <div class="input-group-prepend">
+              <button id="btn-find" type="button" class="btn btn-primary">Find!</button>
+              <span id="bdg-search-size" class="badge badge-light"></span>
+              <span class="input-group-text" id="inputGroup-sizing-lg">Interesting Location</span>
+              <span id="country-selector" class="sticky-top"></span>
+            </div>
+            <input id="search-text" type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+            </div>
+
         <div id="sky" width="600px" height="400px" class="container">
-            <!--this is  the spce where everythin goes -->
+        <!--this is  the spce where the table goes -->
         </div>
 
 <script src="https://unpkg.com/moment" />
