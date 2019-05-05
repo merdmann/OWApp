@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
             result = item.weather[0].description=="overcast clouds" ? "png/013-cloudy.png" : result;
             result = item.weather[0].description=="clear sky" ? "png/013-cloudy.png" : result;
         }
-    	return result;
+    	return "./img/icons/" + result;
     }
 
     function appendRow( str, row ) {
@@ -92,13 +92,16 @@ document.addEventListener('DOMContentLoaded', function () {
         for(let i=0; i<row.length; ++i ) {
             result += `<div class="col-sm-4">${row[i]}</div>`;
         }
-        return result += `</div>`;
+        console.log(result);
+        return result += `</div>`; // end of row 
     }
 
     /* a small wraper to inser the summry image */
     function  summaryImage(item) {
-        return `<img class="summaryIcons" src=${"./img/icons/" + summary(item)}`;
+        let result=`<img class="summaryIcons" src=${summary(item)}>`;
 
+        console.log(result);
+        return result;
     } 
 
     // do the per page rendering of the received data
@@ -114,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
 //        }
 
         // create forecast overview
-        let table = ``;
+        let table = `<div class="container">`;
 
         /* running throught the  complete weather prediction */
         data.list.forEach( function( item ){
