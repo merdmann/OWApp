@@ -88,15 +88,11 @@ document.addEventListener('DOMContentLoaded', function () {
     function appendRow( str, row ) {
         let result = str;
 
-        result += `</div><div class="row">`
+        result += `<div class="row">`
         for(let i=0; i<row.length; ++i ) {
-            console.log(row.length);
-            result += `<div class="col-sm-4">
-                          ${row[i].trim()}
-                       </div>
-                       `;
+            result += `<div class="col-sm-4">${row[i]}</div>`;
         }
-        return result;
+        return result += `</div>`;
     }
 
     /* a small wraper to inser the summry image */
@@ -118,12 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
 //        }
 
         // create forecast overview
-        let table = ` <table>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Summary</th>
-                      <th>Temperature</th>
-                    `
+        let table = ``;
+
         /* running throught the  complete weather prediction */
         data.list.forEach( function( item ){
             console.log(item.dt_txt)  // e.g: 2019-05-07 15:00:0
@@ -132,13 +124,12 @@ document.addEventListener('DOMContentLoaded', function () {
             let currentDate = date;
 
             table =  appendRow( table,  
-                         [ `${ToC(item.main.temp)}`,
-                          `${date} ${time} ${ToC(item.main.temp)}`,
+                         [`${ToC(item.main.temp)}`,
+                          `${date} ${time}`,
                           `${summaryImage(item)}`] );
 
            }); // end forEach list item
 
-           table += `</table>`;
            console.log(table);
 
         let info = `<div class="card">
