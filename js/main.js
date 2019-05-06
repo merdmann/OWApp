@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* a small wraper to inser the summry image */
-    function  summaryImage(item) {
-        let result=`<img class="summaryIcons" src=${summary(item)}>`;
+    function  summaryImage(item, cls) {
+        let result=`<img class="${cls}" src=${summary(item)}>`;
 
         console.log(result);
         return result;
@@ -112,9 +112,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const _sky_ = document.getElementById("sky");
 
 
-//        if( data.cod != 200) {
-//        	alert(data.message );
-//        }
+        if( data.cod != 200) {
+       	    alert(data.message );
+        }
 
         // create forecast overview
         let table = `<div class="container">`;
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
             table =  appendRow( table,  
                          [`${ToC(item.main.temp)}`,
                           `${date} ${time}`,
-                          `${summaryImage(item)}`] );
+                          `${summaryImage(item, "summaryIcons")}`] );
 
            }); // end forEach list item
 
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let info = `<div class="card">
                     <div class="card-header lead"><h1>${data.city.name} / ${data.city.country}</h1></div>
-                      <img class="float-right dialySummary" src=${ "./img/icons/" + summary(data.list[0]) }>
+                      ${summaryImage(data.list[0], "dailySummary")}
                         <div class="card-body">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item lead">${data.city.name} ${data.list[0].weather[0].description}</li>
