@@ -1,0 +1,13 @@
+{
+    "folders": [
+		{
+			"path": "C:\\Users\\micha\\Projects\\battleship"
+		},
+		{
+			"path": "C:\\Users\\micha\\Projects\\battleship\\public"
+		}
+	],
+    "settings": {
+        "liveServer.settings.multiRootWorkspaceName": "battleship"
+    }
+}
