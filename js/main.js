@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("Search (" + name + ")");
 
             Cities.forEach(function(city) {
-                if (city.name.toLowerCase().includes(name.toLowerCase())) {
+                if (city.name.toLowerCase() === name.toLowerCase()) {
                     if (!countries.includes(city.country)) {
                         countries.push(city.country);
                         result.set(city.country, city.id);
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
                       ${summaryImage(data.list[0], "dailySummary")}
                         <div class="card-body">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item lead">${data.city.name} ${data.list[0].weather[0].description}</li>
+                            <li class="list-group-item lead"> ${data.list[0].weather[0].description}</li>
                             <li class="list-group-item lead">Temperature ${ToC( data.list[0].main.temp_min)} C</li>
                         </ul>
                        ${table}
