@@ -19,13 +19,10 @@
         <div class="input-group input-group-lg">
             <div class="input-group-prepend">
                 <button id="btn-find" type="button" class="btn btn-primary">Find!</button>
-                <span id="bdg-search-size" class="badge badge-light"></span>
-                <span class="input-group-text" id="inputGroup-sizing-lg">Locations with the same name in </span>
-                <span id="country-selector" class="sticky-top"></span>
             </div>
-            <input id="search-text" type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+            <input id="search-text" type="text" list="location-list" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
         </div>
-
+        <span id="result"></span>
         <div id="sky" width="600px" height="400px" class="container">
             <!--this is  the spce where the table goes -->
         </div>

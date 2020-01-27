@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 document.addEventListener('DOMContentLoaded', function() {
         console.log("DOMContentLoaded")
         const MS = 1000
@@ -6,60 +6,59 @@ document.addEventListener('DOMContentLoaded', function() {
         let id = 0;
         const K = 273.15;
 
-
         /* search by name returns a result set */
         function Search(name) {
             let result = new Map();
-            let countries = [];
-
-            console.log("Search (" + name + ")");
+            let fqcn = name.split('-');
+            const cty = fqcn[0].trim();
+            const ctr = typeof fqcn[1] !== 'undefined' ? fqcn[1].trim() : undefined
 
             Cities.forEach(function(city) {
-                if (city.name.toLowerCase() === name.toLowerCase()) {
-                    if (!countries.includes(city.country)) {
-                        countries.push(city.country);
-                        result.set(city.country, city.id);
-                    }
+                if (city.name.toLowerCase() === cty.toLowerCase()) {
+                    if (typeof ctr !== 'undefined') { // ctr is set in the sesrch
+                        if (ctr === city.country) {
+                            result.set(city.name + ' - ' + city.country, city.id)
+                        }
+                    } else
+                        result.set(city.name + ' - ' + city.country, city.id)
                 }
             });
-
-            return result;
+            return result
         }
 
         /* start and pick wht is requested on the screen */
         function main(data) {
             const pageTitle = document.title;
-            console.log("main :" + pageTitle);
             const _search_text_ = document.getElementById("search-text");
             const _sky_ = document.getElementById("sky");
             const _btn_find_ = document.getElementById("btn-find");
-            const _bdg_search_size_ = document.getElementById("bdg-search-size");
-            const _select_ = document.getElementById("select-country");
-            let id = 0;
 
-
+            // find button
             _btn_find_.addEventListener("click", function() {
-                let resultSet = Search(_search_text_.value);
+                const resultSet = Search(_search_text_.value)
 
-                _bdg_search_size_.innerHTML = resultSet.size;
-                let tmp = `<select id="select-country">`;
-                resultSet.forEach(function(item, key, map) {
-                    tmp += `<option value="${item}">${key}</option>`;
+                let tmp = '<datalist id="location-list">'
+
+                resultSet.forEach(function(item, index) {
+                    const location = _search_text_.value;
+                    tmp += ` <option value = "${index}">${item}</option>`
                 })
-                tmp += "</select>"
-                document.getElementById("country-selector").innerHTML = tmp;
+                tmp += '</datalist>'
+                const _result_ = document.getElementById("result")
+                _result_.innerHTML = tmp
 
-                const _select_ = document.getElementById("select-country");
-                _select_.addEventListener('click', function() {
-                    id = _select_.options[_select_.selectedIndex].value;
-                    console.log(id.value);
-                    fetchData("http://api.openweathermap.org/data/2.5/forecast?id=" + id);
+                const _select_ = document.getElementById("location-select")
+
+                _result_.addEventListener('click', function() {
+                    const id = _select_.selectedIndex
+                    console.log(id);
+                    fetchData("http://api.openweathermap.org/data/2.5/forecast?id=" + Serch(search_text_.value));
                 });
             });
         } /* main */
 
         /*
-         * Covert kelvin into Celsius
+         * Convert kelvin into Celsius
          */
         function ToC(x) {
             return (x - K).toFixed(0);
@@ -86,19 +85,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function appendRow(str, row) {
-            let result = str;
+            let result = str
 
-            result += `<div class="row">`
+            result += ` <div class="row text-center"> `
             for (let i = 0; i < row.length; ++i) {
-                result += `<div class="col-sm-4">${row[i]}</div>`;
+                result += ` < div class = "col-sm-4 text-center" > $ { row[i] } < /div>`;
             }
-            console.log(result);
             return result += `</div>`; // end of row 
         }
 
         /* a small wraper to inser the summry image */
         function summaryImage(item, cls) {
-            let result = `<img class="${cls}" src=${summary(item)}>`;
+            let result = `<img class="${cls} block-center" src=${summary(item)}>`;
 
             console.log(result);
             return result;
@@ -110,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(data);
             let todays = data.list[0].weather[0].description;
             const _sky_ = document.getElementById("sky");
-
 
             if (data.cod != 200) {
                 alert(data.message);
@@ -133,8 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             }); // end forEach list item
 
-            console.log(table);
-
             let info = `<div class="card">
                     <div class="card-header lead"><h1>${data.city.name} / ${data.city.country}</h1></div>
                       ${summaryImage(data.list[0], "dailySummary")}
@@ -147,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
                      </div>
                      </div>`
 
-            _sky_.innerHTML = info;
+            _sky_.innerHTML += info;
 
         } /* ProcessAndRender */
 
