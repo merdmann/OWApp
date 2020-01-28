@@ -26,6 +26,24 @@ document.addEventListener('DOMContentLoaded', function() {
             return result
         }
 
+        var timeout = null;
+        document.getElementById('search-text').addEventListener('keyup', function() {
+            var that = this
+            if (timeout !== null) {
+                clearTimeout(timeout);
+            }
+            var timeout = setTimeout(function() {
+                let resultSet = Search($(that).val())
+                let tmp = '<datalist id="location-list">'
+                resultSet.forEach(function(item, index) {
+                    tmp += ` <option value = "${index}">${item}</option>`
+                })
+                tmp += '</datalist>';
+                const _result_ = document.getElementById("result")
+                _result_.innerHTML = tmp
+            }, 1000);
+        });
+
         /* start and pick wht is requested on the screen */
         function main(data) {
             const pageTitle = document.title;
@@ -33,14 +51,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const _sky_ = document.getElementById("sky");
             const _btn_find_ = document.getElementById("btn-find");
 
-            // find button
+            // find button whichexpands the set
             _btn_find_.addEventListener("click", function() {
                 const resultSet = Search(_search_text_.value)
 
                 let tmp = '<datalist id="location-list">'
-
                 resultSet.forEach(function(item, index) {
-                    const location = _search_text_.value;
                     tmp += ` <option value = "${index}">${item}</option>`
                 })
                 tmp += '</datalist>'
