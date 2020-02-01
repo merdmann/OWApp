@@ -6,10 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
         let id = 0;
         const K = 273.15;
 
-        /* search by name returns a result set */
+        /* search by name returns a result set since country names are only uniqe in a country
+         * location name:
+         *  <string> - <iso code>
+         *  e.g: London - GB
+         */
         function Search(name) {
-            let result = new Map();
-            let fqcn = name.split('-');
+            const result = new Map();
+            const fqcn = name.split('-');
             const cty = fqcn[0].trim();
             const ctr = typeof fqcn[1] !== 'undefined' ? fqcn[1].trim() : undefined
 
