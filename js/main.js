@@ -6,10 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
         let id = 0;
         const K = 273.15;
 
-        /* search by name returns a result set */
+        /* search by name returns a result set since country names are only uniqe in a country
+         * location name:
+         *  <string> - <iso code>
+         *  e.g: London - GB
+         */
         function Search(name) {
-            let result = new Map();
-            let fqcn = name.split('-');
+            const result = new Map();
+            const fqcn = name.split('-');
             const cty = fqcn[0].trim();
             const ctr = typeof fqcn[1] !== 'undefined' ? fqcn[1].trim() : undefined
 
@@ -25,37 +29,43 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             return result
         }
+        /* wait for input */
+        var timeout = null;
+        document.getElementById('search-text').addEventListener('keyup', function() {
+            var that = this
+            if (timeout !== null) {
+                clearTimeout(timeout);
+            }
+            var timeout = setTimeout(function() {
+                    console.log("timeout")
+                    let resultSet = Search($(that).val())
+                    if (resultSet.size === 1) {
+                        const id = resultSet.values().next().value;
+                        console.log(id)
+                        main(id);
+                    }
+                    let tmp = '<datalist id="location-list">'
+                    resultSet.forEach(function(item, index) {
+                        tmp += ` <option value = "${index}">${item}</option>`
+                    })
+                    tmp += '</datalist>';
+                    const _result_ = document.getElementById("result")
+
+                    _result_.innerHTML = tmp
+                },
+                1000);
+        });
 
         /* start and pick wht is requested on the screen */
         function main(data) {
-            const pageTitle = document.title;
             const _search_text_ = document.getElementById("search-text");
             const _sky_ = document.getElementById("sky");
-            const _btn_find_ = document.getElementById("btn-find");
+            _sky_.innerHTML = "";
 
-            // find button
-            _btn_find_.addEventListener("click", function() {
-                const resultSet = Search(_search_text_.value)
+            const resultSet = Search(_search_text_.value)
 
-                let tmp = '<datalist id="location-list">'
-
-                resultSet.forEach(function(item, index) {
-                    const location = _search_text_.value;
-                    tmp += ` <option value = "${index}">${item}</option>`
-                })
-                tmp += '</datalist>'
-                const _result_ = document.getElementById("result")
-                _result_.innerHTML = tmp
-
-                const _select_ = document.getElementById("location-select")
-
-                _result_.addEventListener('click', function() {
-                    const id = _select_.selectedIndex
-                    console.log(id);
-                    fetchData("http://api.openweathermap.org/data/2.5/forecast?id=" + Serch(search_text_.value));
-                });
-            });
-        } /* main */
+            fetchData("http://api.openweathermap.org/data/2.5/forecast?id=" + data);
+        }
 
         /*
          * Convert kelvin into Celsius
@@ -89,9 +99,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             result += ` <div class="row text-center"> `
             for (let i = 0; i < row.length; ++i) {
-                result += ` < div class = "col-sm-4 text-center" > $ { row[i] } < /div>`;
+                result += `<div class="col-sm-4 text-center"> ${ row[i] } </div>`;
             }
-            return result += `</div>`; // end of row 
+            return result += `</div>`; // end of row
         }
 
         /* a small wraper to inser the summry image */
@@ -139,11 +149,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             <li class="list-group-item lead">Temperature ${ToC( data.list[0].main.temp_min)} C</li>
                         </ul>
                        ${table}
-                     </div>
-                     </div>`
+                        </div>
+                    </div>`
 
             _sky_.innerHTML += info;
-
         } /* ProcessAndRender */
 
         // fetches data from the  server

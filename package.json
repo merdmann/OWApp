@@ -1,22 +1,26 @@
 {
-  "name": "owapp",
-  "version": "1.0.0",
-  "description": "Open Wearther browser",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/merdmann/OWApp.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/merdmann/OWApp/issues"
-  },
-  "homepage": "https://github.com/merdmann/OWApp#readme",
-  "devDependencies": {
-    "cypress": "^3.8.0"
-  }
+    "name": "yes",
+    "version": "1.0.0",
+    "description": "This will be simple implementation of the german \"Schiffe versenken\"",
+    "main": "index.js",
+    "directories": {
+        "test": "test"
+    },
+    "dependencies": {
+        "chai": "^4.2.0"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "mocha --extension spec"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/merdmann/battleship.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/merdmann/battleship/issues"
+    },
+    "homepage": "https://github.com/merdmann/battleship#readme"
 }
