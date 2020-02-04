@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     let tmp = '<datalist id="location-list">'
                     resultSet.forEach(function(item, index) {
-                        tmp += ` <option value = "${index}">${item}</option>`
+                        tmp += `<option value = "${index}">${item}</option>`
                     })
                     tmp += '</datalist>';
                     const _result_ = document.getElementById("result")
@@ -97,11 +97,11 @@ document.addEventListener('DOMContentLoaded', function() {
         function appendRow(str, row) {
             let result = str
 
-            result += ` <div class="row text-center"> `
+            result += `<div class="row text-center"> `
             for (let i = 0; i < row.length; ++i) {
-                result += `<div class="col-sm-4 text-center"> ${ row[i] } </div>`;
+                result += `<div class="col-sm-4 text-center"> ${row[i]} </div>`;
             }
-            return result += `</div>`; // end of row
+            return result += `</div><hr class="style5">`; // end of row
         }
 
         /* a small wraper to inser the summry image */
@@ -131,7 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(item.dt_txt) // e.g: 2019-05-07 15:00:0
                 let date = item.dt_txt.split(" ")[0];
                 let time = item.dt_txt.split(" ")[1];
-                let currentDate = date;
 
                 table = appendRow(table, [`${ToC(item.main.temp)}`,
                     `${date} ${time}`,
