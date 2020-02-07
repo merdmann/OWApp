@@ -129,8 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
             /* running throught the  complete weather prediction */
             data.list.forEach(function(item) {
                 console.log(item.dt_txt) // e.g: 2019-05-07 15:00:0
-                let date = item.dt_txt.split(" ")[0];
-                let time = item.dt_txt.split(" ")[1];
+                const date = item.dt_txt.split(' ')[0]
+                const time = item.dt_txt.split(' ')[1]
 
                 table = appendRow(table, [`${ToC(item.main.temp)}`,
                     `${date} ${time}`,
@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } /* ProcessAndRender */
 
         // fetches data from the  server
+        // TODO: this key needs to be replaced to make it working in the netlify environment
         function fetchData(url) {
             const key = "6f88b36c3ba927bbc4676605fc738ae3";
             const myurl = url + "&appid=" + key;
